@@ -1,4 +1,4 @@
-use std::{io::Read, net::{TcpListener, ToSocketAddrs}};
+use std::{io::{Read, Write}, net::{TcpListener, ToSocketAddrs}};
 
 pub struct Server {
     listener: TcpListener
@@ -19,6 +19,10 @@ impl Server {
             let _ = stream.read(&mut buf).unwrap();
             let request = std::str::from_utf8(&buf).unwrap();
             println!("{}", request);
+
+            let response = "HTTP/1.1 200 OK \r\n\r\n";
+            stream.write(response.as_bytes()).unwrap();
+            stream.flush().unwrap();
         }
     }
 }
